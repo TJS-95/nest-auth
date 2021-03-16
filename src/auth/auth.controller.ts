@@ -1,5 +1,7 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/enums/role.enum';
+import { Roles } from 'src/roles/roles.decorator';
 import { Public } from './auth.decorator';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -18,8 +20,9 @@ export class AuthController {
     return this.authService.login(body)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/test')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   test(@Request() req) {
     return req.user
   }
